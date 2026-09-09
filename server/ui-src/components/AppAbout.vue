@@ -76,7 +76,7 @@ export default {
 		<div class="bg-body ms-sm-n1 me-sm-n1 py-2 text-muted small about-mailpit">
 			<button class="text-muted btn btn-sm" @click="loadInfo()">
 				<i class="bi bi-info-circle-fill me-1"></i>
-				About
+				{{ $t('about') }}
 			</button>
 
 			<button
@@ -363,7 +363,7 @@ export default {
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ $t('close') }}</button>
 					</div>
 				</div>
 			</div>

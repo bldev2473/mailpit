@@ -49,7 +49,7 @@ export default {
 				return message.To[0].Address;
 			}
 
-			return "[ Undisclosed recipients ]";
+			return this.$t("undisclosedRecipients");
 		},
 
 		isSelected(id) {
@@ -141,21 +141,21 @@ export default {
 					</div>
 					<div v-if="message.From" class="overflow-x-hidden">
 						<div class="text-truncate privacy">
-							<b :title="'From: ' + message.From.Address">
+							<b :title="$t('from') + ': ' + message.From.Address">
 								{{ message.From.Name ? message.From.Name : message.From.Address }}
 							</b>
 						</div>
 					</div>
 					<div class="overflow-x-hidden">
 						<div class="text-truncate text-muted small privacy">
-							To: {{ getPrimaryEmailTo(message) }}
+							{{ $t('to') }}: {{ getPrimaryEmailTo(message) }}
 							<span v-if="message.To && message.To.length > 1"> [+{{ message.To.length - 1 }}] </span>
 						</div>
 					</div>
 				</div>
 				<div class="col-lg-6 col-xxl-7 mt-2 mt-lg-0">
 					<div class="subject text-truncate text-spaces-nowrap">
-						<b>{{ message.Subject !== "" ? message.Subject : "[ no subject ]" }}</b>
+						<b>{{ message.Subject !== "" ? message.Subject : $t('noSubject') }}</b>
 					</div>
 					<div v-if="message.Snippet !== ''" class="small text-muted text-truncate">
 						{{ message.Snippet }}
@@ -171,7 +171,7 @@ export default {
 									? { backgroundColor: colorHash(t) }
 									: { backgroundColor: '#6c757d' }
 							"
-							:title="'Filter messages tagged with ' + t"
+							:title="$t('filterTaggedWith', { tag: t })"
 							@click="pagination.start = 0"
 						>
 							{{ t }}
@@ -190,11 +190,11 @@ export default {
 	</template>
 	<template v-else>
 		<p class="text-center mt-5">
-			<span v-if="loadingMessages > 0" class="text-muted"> Loading messages... </span>
+			<span v-if="loadingMessages > 0" class="text-muted"> {{ $t('loadingMessages') }} </span>
 			<template v-else-if="getSearch()"
-				>No results for <code>{{ getSearch() }}</code></template
+				>{{ $t('noResults') }} <code>{{ getSearch() }}</code></template
 			>
-			<template v-else>No messages in your mailbox</template>
+			<template v-else>{{ $t('noMessages') }}</template>
 		</p>
 	</template>
 </template>

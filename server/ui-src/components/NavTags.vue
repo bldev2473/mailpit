@@ -80,18 +80,17 @@ export default {
 <template>
 	<template v-if="mailbox.tags && mailbox.tags.length">
 		<div class="mt-4 text-muted">
-			<button class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Tags</button>
+			<button class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">{{ $t('tags') }}</button>
 			<ul class="dropdown-menu dropdown-menu-end">
 				<li>
 					<button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#EditTagsModal">
-						Edit tags
+						{{ $t('editTags') }}
 					</button>
 				</li>
 				<li>
 					<button class="dropdown-item" @click="mailbox.showTagColors = !mailbox.showTagColors">
-						<template v-if="mailbox.showTagColors">Hide</template>
-						<template v-else>Show</template>
-						tag colors
+						{{ mailbox.showTagColors ? $t('hide') : $t('show') }}
+						{{ $t('tagColors') }}
 					</button>
 				</li>
 			</ul>

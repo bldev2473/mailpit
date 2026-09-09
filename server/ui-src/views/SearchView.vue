@@ -161,9 +161,9 @@ export default {
 <template>
 	<div class="navbar navbar-expand-lg row flex-shrink-0 bg-primary text-white d-print-none" data-bs-theme="dark">
 		<div class="col-xl-2 col-md-3 col-auto pe-0">
-			<RouterLink to="/" class="navbar-brand text-white me-0" @click="pagination.start = 0">
-				<img :src="resolve('/mailpit.svg')" alt="Mailpit" />
-				<span class="ms-2 d-none d-sm-inline">Mailpit</span>
+			<RouterLink to="/" class="navbar-brand text-white me-0 d-inline-flex align-items-center" @click="pagination.start = 0">
+				<img :src="resolve('/mailpit.svg')" alt="openduco" />
+				<span class="ms-2 d-none d-sm-inline">openduco</span>
 			</RouterLink>
 		</div>
 		<div class="col col-md-4k col-lg-5 col-xl-6">
@@ -194,7 +194,7 @@ export default {
 		aria-labelledby="offcanvasLabel"
 	>
 		<div class="offcanvas-header">
-			<h5 id="offcanvasLabel" class="offcanvas-title">Mailpit</h5>
+			<h5 id="offcanvasLabel" class="offcanvas-title">openduco</h5>
 			<button
 				type="button"
 				class="btn-close"

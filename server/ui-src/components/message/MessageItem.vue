@@ -337,7 +337,7 @@ export default {
 				<table class="messageHeaders">
 					<tbody>
 						<tr>
-							<th class="small">From</th>
+							<th class="small">{{ $t('from') }}</th>
 							<td class="privacy">
 								<span v-if="message.From">
 									<span v-if="message.From.Name" class="text-spaces">
@@ -349,19 +349,19 @@ export default {
 										>&gt;
 									</span>
 								</span>
-								<span v-else> [ Unknown ] </span>
+								<span v-else> {{ $t('unknownSender') }} </span>
 
 								<span
 									v-if="message.ListUnsubscribe.Header != ''"
 									class="small ms-3 link"
 									:title="
 										showUnsubscribe
-											? 'Hide unsubscribe information'
-											: 'Show unsubscribe information'
+											? $t('hideUnsubscribeInfo')
+											: $t('showUnsubscribeInfo')
 									"
 									@click="showUnsubscribe = !showUnsubscribe"
 								>
-									Unsubscribe
+									{{ $t('unsubscribe') }}
 									<i
 										class="bi bi bi-info-circle"
 										:class="{ 'text-danger': message.ListUnsubscribe.Errors != '' }"
@@ -370,7 +370,7 @@ export default {
 							</td>
 						</tr>
 						<tr class="small">
-							<th>To</th>
+							<th>{{ $t('to') }}</th>
 							<td class="privacy">
 								<template v-if="message.To && message.To.length">
 									<span v-for="(t, i) in message.To" :key="'to_' + i">
@@ -382,11 +382,11 @@ export default {
 										</span>
 									</span>
 								</template>
-								<span v-else class="text-body-secondary">[Undisclosed recipients]</span>
+								<span v-else class="text-body-secondary">{{ $t('undisclosedRecipients') }}</span>
 							</td>
 						</tr>
 						<tr v-if="message.Cc && message.Cc.length" class="small">
-							<th>Cc</th>
+							<th>{{ $t('cc') }}</th>
 							<td class="privacy">
 								<span v-for="(t, i) in message.Cc" :key="'cc_' + i">
 									<template v-if="i > 0">,</template>
@@ -396,7 +396,7 @@ export default {
 							</td>
 						</tr>
 						<tr v-if="message.Bcc && message.Bcc.length" class="small">
-							<th>Bcc</th>
+							<th>{{ $t('bcc') }}</th>
 							<td class="privacy">
 								<span v-for="(t, i) in message.Bcc" :key="'bcc_' + i">
 									<template v-if="i > 0">,</template>
@@ -406,7 +406,7 @@ export default {
 							</td>
 						</tr>
 						<tr v-if="message.ReplyTo && message.ReplyTo.length" class="small">
-							<th class="text-nowrap">Reply-To</th>
+							<th class="text-nowrap">{{ $t('replyTo') }}</th>
 							<td class="privacy text-body-secondary text-break">
 								<span v-for="(t, i) in message.ReplyTo" :key="'bcc_' + i">
 									<template v-if="i > 0">,</template>
@@ -420,7 +420,7 @@ export default {
 							v-if="message.ReturnPath && message.From && message.ReturnPath != message.From.Address"
 							class="small"
 						>
-							<th class="text-nowrap">Return-Path</th>
+							<th class="text-nowrap">{{ $t('returnPath') }}</th>
 							<td class="privacy text-body-secondary text-break">
 								&lt;<a :href="searchURI(message.ReturnPath)" class="text-body-secondary">
 									{{ message.ReturnPath }} </a
@@ -428,14 +428,14 @@ export default {
 							</td>
 						</tr>
 						<tr>
-							<th class="small">Subject</th>
+							<th class="small">{{ $t('subject') }}</th>
 							<td>
 								<strong v-if="message.Subject != ''" class="text-spaces">{{ message.Subject }}</strong>
-								<small v-else class="text-body-secondary">[ no subject ]</small>
+								<small v-else class="text-body-secondary">{{ $t('noSubject') }}</small>
 							</td>
 						</tr>
 						<tr class="small">
-							<th class="small">Date</th>
+							<th class="small">{{ $t('date') }}</th>
 							<td>
 								{{ messageDate(message.Date) }}
 								<small class="ms-2">({{ getFileSize(message.Size) }})</small>
@@ -458,7 +458,7 @@ export default {
 							</td>
 						</tr>
 						<tr class="small">
-							<th>Tags</th>
+							<th>{{ $t('tags') }}</th>
 							<td>
 								<select
 									v-model="messageTags"
@@ -469,16 +469,16 @@ export default {
 									data-allow-new="true"
 									data-clear-end="true"
 									data-allow-clear="true"
-									data-placeholder="Add tags..."
+									:data-placeholder="$t('addTags')"
 									data-badge-style="secondary"
 									data-regex="^([a-zA-Z0-9\-\ \_\.@]){1,100}$"
 									data-separator="|,|"
 								>
-									<option value="">Type a tag...</option>
+									<option value="">{{ $t('typeTag') }}</option>
 									<!-- you need at least one option with the placeholder -->
 									<option v-for="t in availableTags" :key="t" :value="t">{{ t }}</option>
 								</select>
-								<div class="invalid-feedback">Invalid tag name</div>
+								<div class="invalid-feedback">{{ $t('invalidTagName') }}</div>
 							</td>
 						</tr>
 
@@ -487,7 +487,7 @@ export default {
 							class="small"
 							:class="showUnsubscribe ? '' : 'd-none'"
 						>
-							<th>Unsubscribe</th>
+							<th>{{ $t('unsubscribe') }}</th>
 							<td>
 								<span v-if="message.ListUnsubscribe.Links.length" class="text-muted small me-2">
 									<template v-for="(u, i) in message.ListUnsubscribe.Links">
@@ -524,8 +524,8 @@ export default {
 			>
 				<div class="mt-2 mt-md-0">
 					<template v-if="message.Attachments.length">
-						<span class="badge rounded-pill text-bg-secondary p-2 mb-2" title="Attachments in this message">
-							Attachment<span v-if="message.Attachments.length > 1">s</span> ({{
+						<span class="badge rounded-pill text-bg-secondary p-2 mb-2" :title="$t('attachments')">
+							{{ $t('attachment') }}<span v-if="message.Attachments.length > 1 && $i18n.locale === 'en'">s</span> ({{
 								message.Attachments.length
 							}})
 						</span>
@@ -534,9 +534,9 @@ export default {
 					<span
 						v-if="message.Inline.length"
 						class="badge rounded-pill text-bg-secondary p-2"
-						title="Inline images in this message"
+						:title="$t('inlineImages')"
 					>
-						Inline image<span v-if="message.Inline.length > 1">s</span> ({{ message.Inline.length }})
+						{{ $t('inlineImage') }}<span v-if="message.Inline.length > 1 && $i18n.locale === 'en'">s</span> ({{ message.Inline.length }})
 					</span>
 				</div>
 			</div>
@@ -578,7 +578,7 @@ export default {
 							aria-controls="nav-html-source"
 							aria-selected="false"
 						>
-							HTML Source
+							{{ $t('htmlSource') }}
 						</button>
 					</div>
 				</div>
@@ -592,7 +592,7 @@ export default {
 					aria-controls="nav-html-source"
 					aria-selected="false"
 				>
-					HTML <span class="d-sm-none">Src</span><span class="d-none d-sm-inline">Source</span>
+					{{ $t('htmlSource') }}
 				</button>
 			</template>
 
@@ -607,7 +607,7 @@ export default {
 				aria-selected="false"
 				:class="message.HTML == '' ? 'show' : ''"
 			>
-				Text
+				{{ $t('text') }}
 			</button>
 			<button
 				id="nav-headers-tab"
@@ -619,7 +619,7 @@ export default {
 				aria-controls="nav-headers"
 				aria-selected="false"
 			>
-				<span class="d-sm-none">Hdrs</span><span class="d-none d-sm-inline">Headers</span>
+				{{ $t('headers') }}
 			</button>
 			<button
 				id="nav-raw-tab"
@@ -631,11 +631,11 @@ export default {
 				aria-controls="nav-raw"
 				aria-selected="false"
 			>
-				Raw
+				{{ $t('raw') }}
 			</button>
 			<div v-show="hasAnyChecksEnabled" class="dropdown d-xl-none">
 				<button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-					Checks
+					{{ $t('checks') }}
 				</button>
 				<ul class="dropdown-menu checks">
 					<li v-if="mailbox.showHTMLCheck && message.HTML != ''">
@@ -649,7 +649,7 @@ export default {
 							aria-controls="nav-html"
 							aria-selected="false"
 						>
-							HTML Check
+							{{ $t('htmlCheck') }}
 							<span
 								v-if="htmlScore !== false"
 								class="badge rounded-pill p-1 float-end"
@@ -670,7 +670,7 @@ export default {
 							aria-controls="nav-link-check"
 							aria-selected="false"
 						>
-							Link Check
+							{{ $t('linkCheck') }}
 							<span v-if="linkCheckErrors === 0" class="badge rounded-pill bg-success float-end">
 								<small>0</small>
 							</span>
@@ -690,7 +690,7 @@ export default {
 							aria-controls="nav-html"
 							aria-selected="false"
 						>
-							Spam Analysis
+							{{ $t('spamAnalysis') }}
 							<span
 								v-if="spamScore !== false"
 								class="badge rounded-pill float-end"
@@ -713,7 +713,7 @@ export default {
 				aria-controls="nav-html"
 				aria-selected="false"
 			>
-				HTML Check
+				{{ $t('htmlCheck') }}
 				<span v-if="htmlScore !== false" class="badge rounded-pill p-1" :class="htmlScoreColor">
 					<small>{{ Math.floor(htmlScore) }}%</small>
 				</span>
@@ -729,7 +729,7 @@ export default {
 				aria-controls="nav-link-check"
 				aria-selected="false"
 			>
-				Link Check
+				{{ $t('linkCheck') }}
 				<i v-if="linkCheckErrors === 0" class="bi bi-check-all text-success"></i>
 				<span v-else-if="linkCheckErrors > 0" class="badge rounded-pill bg-danger">
 					<small>{{ formatNumber(linkCheckErrors) }}</small>
@@ -746,7 +746,7 @@ export default {
 				aria-controls="nav-html"
 				aria-selected="false"
 			>
-				Spam Analysis
+				{{ $t('spamAnalysis') }}
 				<span v-if="spamScore !== false" class="badge rounded-pill" :class="spamScoreColor">
 					<small>{{ spamScore }}</small>
 				</span>

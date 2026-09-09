@@ -351,7 +351,7 @@ export default {
 				return message.To[0].Address;
 			}
 
-			return "[ Undisclosed recipients ]";
+			return this.$t("undisclosedRecipients");
 		},
 
 		isActive(id) {
@@ -477,32 +477,32 @@ export default {
 <template>
 	<div class="navbar navbar-expand-lg row flex-shrink-0 bg-primary text-white d-print-none" data-bs-theme="dark">
 		<div class="d-none d-xl-block col-xl-3 col-auto pe-0">
-			<RouterLink to="/" class="navbar-brand text-white me-0" @click="pagination.start = 0">
-				<img :src="resolve('/mailpit.svg')" alt="Mailpit" />
-				<span class="ms-2 d-none d-sm-inline">Mailpit</span>
+			<RouterLink to="/" class="navbar-brand text-white me-0 d-inline-flex align-items-center" @click="pagination.start = 0">
+				<img :src="resolve('/mailpit.svg')" alt="openduco" />
+				<span class="ms-2 d-none d-sm-inline">openduco</span>
 			</RouterLink>
 		</div>
 		<div v-if="!errorMessage" class="col col-xl-5">
-			<button class="btn btn-outline-light me-3 d-xl-none" title="Return to messages" @click="goBack()">
+			<button class="btn btn-outline-light me-3 d-xl-none" :title="$t('returnToMessages')" @click="goBack()">
 				<i class="bi bi-arrow-return-left"></i>
-				<span class="ms-2 d-none d-lg-inline">Back</span>
+				<span class="ms-2 d-none d-lg-inline">{{ $t('back') }}</span>
 			</button>
-			<button class="btn btn-outline-light me-1 me-sm-2" title="Mark unread" @click="toggleRead()">
+			<button class="btn btn-outline-light me-1 me-sm-2" :title="isRead ? $t('markUnread') : $t('markRead')" @click="toggleRead()">
 				<i class="bi bi-eye-slash me-md-2" :class="isRead ? 'bi-eye-slash' : 'bi-eye'"></i>
-				<span class="d-none d-md-inline">Mark <template v-if="isRead">un</template>read</span>
+				<span class="d-none d-md-inline">{{ isRead ? $t('markUnread') : $t('markRead') }}</span>
 			</button>
 			<button
 				v-if="mailbox.uiConfig.MessageRelay && mailbox.uiConfig.MessageRelay.Enabled"
 				class="btn btn-outline-light me-1 me-sm-2"
-				title="Release message"
+				:title="$t('releaseMessage')"
 				@click="initReleaseModal()"
 			>
 				<i class="bi bi-send me-md-2"></i>
-				<span class="d-none d-md-inline">Release</span>
+				<span class="d-none d-md-inline">{{ $t('release') }}</span>
 			</button>
-			<button class="btn btn-outline-light me-1 me-sm-2" title="Delete message" @click="deleteMessage()">
+			<button class="btn btn-outline-light me-1 me-sm-2" :title="$t('deleteMessage')" @click="deleteMessage()">
 				<i class="bi bi-trash-fill me-md-2"></i>
-				<span class="d-none d-md-inline">Delete</span>
+				<span class="d-none d-md-inline">{{ $t('delete') }}</span>
 			</button>
 		</div>
 		<div v-if="!errorMessage" class="col-auto col-lg-4 col-xl-4 text-end">
@@ -512,32 +512,32 @@ export default {
 					class="btn btn-outline-light dropdown-toggle"
 					data-bs-toggle="dropdown"
 					aria-expanded="false"
-					aria-label="Download"
+					:aria-label="$t('download')"
 				>
 					<i class="bi bi-file-arrow-down-fill"></i>
-					<span class="d-none d-md-inline ms-1">Download</span>
+					<span class="d-none d-md-inline ms-1">{{ $t('download') }}</span>
 				</button>
 				<ul class="dropdown-menu dropdown-menu-end">
 					<li>
 						<a
 							:href="resolve('/api/v1/message/' + message.ID + '/raw?dl=1')"
 							class="dropdown-item"
-							title="Message source including headers, body and attachments"
+							:title="$t('rawMessageTitle')"
 						>
-							Raw message
+							{{ $t('rawMessage') }}
 						</a>
 					</li>
 					<li v-if="message.HTML">
 						<button class="dropdown-item" @click="downloadMessageBody(message.HTML, 'html')">
-							HTML body
+							{{ $t('htmlBody') }}
 						</button>
 					</li>
 					<li v-if="message.HTML">
-						<button class="dropdown-item" @click="screenshotMessageHTML()">HTML screenshot</button>
+						<button class="dropdown-item" @click="screenshotMessageHTML()">{{ $t('htmlScreenshot') }}</button>
 					</li>
 					<li v-if="message.Text">
 						<button class="dropdown-item" @click="downloadMessageBody(message.Text, 'txt')">
-							Text body
+							{{ $t('textBody') }}
 						</button>
 					</li>
 					<template v-if="message.Attachments && message.Attachments.length">
@@ -545,21 +545,21 @@ export default {
 							<hr class="dropdown-divider" />
 						</li>
 						<li>
-							<h6 class="dropdown-header">Attachments</h6>
+							<h6 class="dropdown-header">{{ $t('attachments') }}</h6>
 						</li>
 						<li v-for="part in message.Attachments" :key="part.PartID">
 							<RouterLink
 								:to="'/api/v1/message/' + message.ID + '/part/' + part.PartID"
 								class="row m-0 dropdown-item d-flex"
 								target="_blank"
-								:title="part.FileName !== '' ? part.FileName : '[ unknown ]'"
+								:title="part.FileName !== '' ? part.FileName : $t('unknownSender')"
 								style="min-width: 350px"
 							>
 								<div class="col-auto p-0 pe-1">
 									<i class="bi" :class="attachmentIcon(part)"></i>
 								</div>
 								<div class="col text-truncate p-0 pe-1">
-									{{ part.FileName !== "" ? part.FileName : "[ unknown ]" }}
+									{{ part.FileName !== "" ? part.FileName : $t('unknownSender') }}
 								</div>
 								<div class="col-auto text-muted small p-0">
 									{{ getFileSize(part.Size) }}
@@ -572,21 +572,21 @@ export default {
 							<hr class="dropdown-divider" />
 						</li>
 						<li>
-							<h6 class="dropdown-header">Inline image<span v-if="message.Inline.length > 1">s</span></h6>
+							<h6 class="dropdown-header">{{ $t('inlineImages') }}</h6>
 						</li>
 						<li v-for="part in message.Inline" :key="part.PartID">
 							<RouterLink
 								:to="'/api/v1/message/' + message.ID + '/part/' + part.PartID"
 								class="row m-0 dropdown-item d-flex"
 								target="_blank"
-								:title="part.FileName !== '' ? part.FileName : '[ unknown ]'"
+								:title="part.FileName !== '' ? part.FileName : $t('unknownSender')"
 								style="min-width: 350px"
 							>
 								<div class="col-auto p-0 pe-1">
 									<i class="bi" :class="attachmentIcon(part)"></i>
 								</div>
 								<div class="col text-truncate p-0 pe-1">
-									{{ part.FileName !== "" ? part.FileName : "[ unknown ]" }}
+									{{ part.FileName !== "" ? part.FileName : $t('unknownSender') }}
 								</div>
 								<div class="col-auto text-muted small p-0">
 									{{ getFileSize(part.Size) }}
@@ -601,7 +601,7 @@ export default {
 				:to="'/view/' + previousID"
 				class="btn btn-outline-light ms-1 ms-sm-2 me-1"
 				:class="previousID ? '' : 'disabled'"
-				title="View previous message"
+				:title="$t('viewPrev')"
 			>
 				<i class="bi bi-caret-left-fill"></i>
 			</RouterLink>
@@ -609,7 +609,7 @@ export default {
 				:to="'/view/' + nextID"
 				class="btn btn-outline-light"
 				:class="nextID ? '' : 'disabled'"
-				title="View next message"
+				:title="$t('viewNext')"
 			>
 				<i class="bi bi-caret-right-fill"></i>
 			</RouterLink>
@@ -628,14 +628,12 @@ export default {
 				<button class="list-group-item list-group-item-action" @click="goBack()">
 					<i class="bi bi-arrow-return-left me-1"></i>
 					<span class="ms-1">
-						Return to
-						<template v-if="mailbox.searching">search</template>
-						<template v-else>inbox</template>
+						{{ mailbox.searching ? $t('returnToSearch') : $t('returnToInbox') }}
 					</span>
 					<span
 						v-if="mailbox.unread && !errorMessage"
 						class="badge rounded-pill ms-1 float-end text-bg-secondary"
-						title="Unread messages"
+						:title="$t('unreadMessages')"
 					>
 						{{ formatNumber(mailbox.unread) }}
 					</span>
@@ -649,7 +647,7 @@ export default {
 				@scroll="scrollHandler"
 			>
 				<button v-if="liveLoaded >= 100" class="w-100 alert alert-warning small" @click="reloadWindow()">
-					Reload to see newer messages
+					{{ $t('reloadNewer') }}
 				</button>
 				<template v-if="messagesList && messagesList.length">
 					<div class="list-group">
@@ -663,7 +661,7 @@ export default {
 						>
 							<div class="col overflow-x-hidden">
 								<div class="text-truncate privacy small">
-									<b v-if="summary.From" :title="'From: ' + summary.From.Address">
+									<b v-if="summary.From" :title="$t('from') + ': ' + summary.From.Address">
 										{{ summary.From.Name ? summary.From.Name : summary.From.Address }}
 									</b>
 								</div>
@@ -674,7 +672,7 @@ export default {
 							</div>
 							<div class="col-12 overflow-x-hidden">
 								<div class="text-truncate privacy small">
-									To: {{ getPrimaryEmailTo(summary) }}
+									{{ $t('to') }}: {{ getPrimaryEmailTo(summary) }}
 									<span v-if="summary.To && summary.To.length > 1">
 										[+{{ summary.To.length - 1 }}]
 									</span>
@@ -682,7 +680,7 @@ export default {
 							</div>
 							<div class="col-12 overflow-x-hidden mt-1">
 								<div class="text-truncates small">
-									<b>{{ summary.Subject !== "" ? summary.Subject : "[ no subject ]" }}</b>
+									<b>{{ summary.Subject !== "" ? summary.Subject : $t('noSubject') }}</b>
 								</div>
 							</div>
 							<div v-if="summary.Tags.length" class="col-12">

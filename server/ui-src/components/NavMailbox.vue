@@ -75,11 +75,11 @@ export default {
 			<button class="list-group-item list-group-item-action active" @click="reloadInbox">
 				<i v-if="mailbox.connected" class="bi bi-envelope-fill me-1"></i>
 				<i v-else class="bi bi-arrow-clockwise me-1"></i>
-				<span class="ms-1">Inbox</span>
+				<span class="ms-1">{{ $t('inbox') }}</span>
 				<span
 					v-if="mailbox.unread"
 					class="badge rounded-pill ms-1 float-end text-bg-secondary"
-					title="Unread messages"
+					:title="$t('unreadMessages')"
 				>
 					{{ formatNumber(mailbox.unread) }}
 				</span>
@@ -93,7 +93,7 @@ export default {
 					@click="markAllRead"
 				>
 					<i class="bi bi-eye-fill me-1"></i>
-					Mark all read
+					{{ $t('markAllRead') }}
 				</button>
 				<button
 					v-else
@@ -103,7 +103,7 @@ export default {
 					:disabled="!mailbox.unread"
 				>
 					<i class="bi bi-eye-fill me-1"></i>
-					Mark all read
+					{{ $t('markAllRead') }}
 				</button>
 				<!-- checking if MessageRelay is defined prevents UI flicker while loading -->
 				<template v-if="mailbox.uiConfig.MessageRelay && !mailbox.uiConfig.HideDeleteAllButton">
@@ -114,7 +114,7 @@ export default {
 						@click="deleteAllMessages"
 					>
 						<i class="bi bi-trash-fill me-1 text-danger"></i>
-						Delete all
+						{{ $t('deleteAll') }}
 					</button>
 					<button
 						v-else
@@ -124,7 +124,7 @@ export default {
 						:disabled="!mailbox.total"
 					>
 						<i class="bi bi-trash-fill me-1 text-danger"></i>
-						Delete all
+						{{ $t('deleteAll') }}
 					</button>
 				</template>
 			</template>
@@ -145,19 +145,16 @@ export default {
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 id="MarkAllReadModalLabel" class="modal-title">Mark all messages as read?</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						<h5 id="MarkAllReadModalLabel" class="modal-title">{{ $t('markAllReadTitle') }}</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" :aria-label="$t('close')"></button>
 					</div>
 					<div class="modal-body">
-						This will mark {{ formatNumber(mailbox.unread) }} message<span v-if="mailbox.unread > 1"
-							>s</span
-						>
-						as read.
+						{{ $t('markAllReadBody', { count: formatNumber(mailbox.unread), s: mailbox.unread > 1 ? 's' : '' }) }}
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ $t('cancel') }}</button>
 						<button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="markAllRead">
-							Confirm
+							{{ $t('confirm') }}
 						</button>
 					</div>
 				</div>
@@ -174,19 +171,16 @@ export default {
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 id="DeleteAllModalLabel" class="modal-title">Delete all messages?</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						<h5 id="DeleteAllModalLabel" class="modal-title">{{ $t('deleteAllTitle') }}</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" :aria-label="$t('close')"></button>
 					</div>
 					<div class="modal-body">
-						This will permanently delete {{ formatNumber(mailbox.total) }} message<span
-							v-if="mailbox.total > 1"
-							>s</span
-						>.
+						{{ $t('deleteAllBody', { count: formatNumber(mailbox.total), s: mailbox.total > 1 ? 's' : '' }) }}
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ $t('cancel') }}</button>
 						<button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="deleteAllMessages">
-							Delete
+							{{ $t('delete') }}
 						</button>
 					</div>
 				</div>

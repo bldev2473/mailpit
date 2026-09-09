@@ -73,20 +73,20 @@ export default {
 					v-model.trim="search"
 					type="text"
 					class="form-control border-0"
-					aria-label="Search"
-					placeholder="Search mailbox"
+					:aria-label="$t('search')"
+					:placeholder="$t('searchPlaceholder')"
 				/>
 				<button
 					v-if="search != ''"
 					type="button"
 					class="btn btn-link position-absolute end-0 text-muted"
-					aria-label="Clear search"
+					:aria-label="$t('clearSearch')"
 					@click="resetSearch"
 				>
 					<i class="bi bi-x-circle"></i>
 				</button>
 			</div>
-			<button class="btn btn-outline-secondary" type="submit" aria-label="Search">
+			<button class="btn btn-outline-secondary" type="submit" :aria-label="$t('search')">
 				<i class="bi bi-search"></i>
 			</button>
 		</div>

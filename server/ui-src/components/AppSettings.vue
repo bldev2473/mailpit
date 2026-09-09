@@ -3,6 +3,7 @@ import CommonMixins from "../mixins/CommonMixins";
 import Tags from "bootstrap5-tags";
 import timezones from "timezones-list";
 import { mailbox } from "../stores/mailbox";
+import { i18n } from "../stores/i18n";
 
 export default {
 	mixins: [CommonMixins],
@@ -10,6 +11,8 @@ export default {
 	data() {
 		return {
 			mailbox,
+			i18n,
+			selectedLanguage: i18n.locale,
 			theme: localStorage.getItem("mp-theme") ? localStorage.getItem("mp-theme") : "auto",
 			timezones,
 			chaosConfig: false,
@@ -19,6 +22,10 @@ export default {
 	},
 
 	watch: {
+		selectedLanguage(v) {
+			i18n.setLocale(v);
+		},
+
 		theme(v) {
 			if (v === "auto") {
 				localStorage.removeItem("mp-theme");
@@ -166,6 +173,13 @@ export default {
 							tabindex="0"
 						>
 							<div class="my-3">
+								<label for="language" class="form-label">{{ $t('languageSelect') }}</label>
+								<select id="language" v-model="selectedLanguage" class="form-select">
+									<option value="ko">한국어 (Korean)</option>
+									<option value="en">English</option>
+								</select>
+							</div>
+							<div class="mb-3">
 								<label for="theme" class="form-label">Mailpit theme</label>
 								<select id="theme" v-model="theme" class="form-select">
 									<option value="auto">Auto (detect from browser)</option>
@@ -444,7 +458,7 @@ export default {
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ $t('close') }}</button>
 					</div>
 				</div>
 			</div>

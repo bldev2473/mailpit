@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import ColorHash from "color-hash";
 import { Modal, Offcanvas } from "bootstrap";
 import { limitOptions } from "../stores/pagination";
+import { i18n } from "../stores/i18n";
 
 // BootstrapElement is used to return a fake Bootstrap element
 // if the ID returns nothing to prevent errors.
@@ -52,6 +53,9 @@ export default {
 		},
 
 		messageDate(d) {
+			if (i18n.locale === "ko") {
+				return dayjs(d).format("YYYY년 M월 D일 (ddd) A h:mm");
+			}
 			return dayjs(d).format("ddd, D MMM YYYY, h:mm a");
 		},
 

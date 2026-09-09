@@ -99,7 +99,7 @@ export default {
 			@click="markSelectedRead"
 		>
 			<i class="bi bi-eye-fill me-1"></i>
-			Mark read
+			{{ $t('markRead') }}
 		</button>
 		<button
 			class="list-group-item list-group-item-action"
@@ -107,15 +107,15 @@ export default {
 			@click="markSelectedUnread"
 		>
 			<i class="bi bi-eye-slash me-1"></i>
-			Mark unread
+			{{ $t('markUnread') }}
 		</button>
 		<button class="list-group-item list-group-item-action" @click="deleteMessages()">
 			<i class="bi bi-trash-fill me-1 text-danger"></i>
-			Delete selected
+			{{ $t('deleteSelected') }}
 		</button>
 		<button class="list-group-item list-group-item-action" @click="mailbox.selected = []">
 			<i class="bi bi-x-circle me-1"></i>
-			Cancel selection
+			{{ $t('cancelSelection') }}
 		</button>
 	</template>
 

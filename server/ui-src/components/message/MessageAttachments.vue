@@ -83,7 +83,12 @@ export default {
 		@click="mailbox.showAttachmentDetails = !mailbox.showAttachmentDetails"
 	>
 		<i class="bi me-1" :class="mailbox.showAttachmentDetails ? 'bi-eye-slash' : 'bi-eye'"></i>
-		{{ mailbox.showAttachmentDetails ? "Hide" : "Show" }} attachment details
+		<template v-if="$i18n.locale === 'ko'">
+			첨부파일 상세 {{ mailbox.showAttachmentDetails ? "숨기기" : "보기" }}
+		</template>
+		<template v-else>
+			{{ mailbox.showAttachmentDetails ? "Hide" : "Show" }} attachment details
+		</template>
 	</button>
 
 	<div class="row gx-1 w-100">
@@ -254,8 +259,8 @@ export default {
 					</table>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					<a class="btn btn-primary" target="_blank" :href="ical.link"> Download attachment </a>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ $t('close') }}</button>
+					<a class="btn btn-primary" target="_blank" :href="ical.link"> {{ $t('downloadAttachment') }} </a>
 				</div>
 			</div>
 		</div>

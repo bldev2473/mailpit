@@ -477,7 +477,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 	<meta name="referrer" content="no-referrer">
 	<meta name="robots" content="noindex, nofollow, noarchive">
 	<link rel="icon" href="{{ .Webroot }}favicon.svg">
-	<title>Mailpit</title>
+	<title>openduco</title>
 	<link rel=stylesheet href="{{ .Webroot }}dist/app.css?{{ .Version }}">
 </head>
 
